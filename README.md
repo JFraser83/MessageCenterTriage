@@ -1,21 +1,23 @@
 # Message Center Triage Agent
 
-This guide outlines the requirements and setup steps for deploying the **Message Center Triage Agent** in Copilot Studio.
+The Message Center Triage Agent helps automate the review and categorization of Microsoft 365 Message Center posts. The agent analyzes updates, determines impact, assigns ownership, and moves tasks into the appropriate Planner bucket for follow-up.
 
-## Requirements
+---
 
-Before setting up the agent, ensure you have:
+# Prerequisites
 
-1. A Power Platform environment with Dataverse
-2. Copilot Studio credits or pay-as-you-go configured  
-   > This agent is autonomous.
-3. Message Center sync to Planner configured
+Before deploying the solution, ensure the following requirements are met:
 
-## Set Up Planner
+- Power Platform Environment with Dataverse
+- Copilot Studio Credits or Pay-As-You-Go configured
+  - This is an autonomous agent and consumes generative AI capacity
+- Microsoft 365 Message Center synchronized to Planner
 
-> Take note of the Microsoft 365 Group and Planner plan name. You will need these values in later steps.
+---
 
-The Planner plan should include the following buckets:
+# Configure the Planner Plan
+
+Create a Planner plan with the following buckets:
 
 - Informational
 - Low
@@ -23,77 +25,239 @@ The Planner plan should include the following buckets:
 - High
 - Critical
 
-## Set Up Message Center Sync to Planner
+> **Important:** Record the Planner Group Name and Plan Name. These values are required later when configuring the agent.
 
-> **Warning:** If you are setting this up as a new sync, the 28-day option can take a long time. The 7-day option is recommended.
+![Planner Buckets](Images/Planner-buckets.png)essage Center Sync to Planner
 
-Reference: [Track message center tasks in Planner - Microsoft Planner](https://learn.microsoft.com/ener-syncing
+Enable Message Center synchronization to Planner using the Microsoft 365 admin configuration.
 
-When adding Planner sync, choose the **To-do** bucket as the default bucket.
+**Reference**
 
-## Add the Agent to Your Environment
+https://learn.microsoft.com/en-us/planner/track-message-center-tasks-planner#turn-on-planner-syncing
 
-1. Navigate to https://copilotstudio.microsoft.com.
-2. Select your Power Platform environment on the right-hand side.
-3. Select the three dots on the left navigation menu.
-4. Choose **Solutions**.
-5. Import the `MessageCenterTriage.zip` solution file.
-6. Open the included **Workload Assignment** Excel file.
-7. Update the product owners.
-8. Save the file.
-9. Navigate to https://make.powerapps.com.
-10. Go to **Tables**.
-11. Select the `MCTeamAssignments` table.
-12. Select **Import**.
-13. Choose **Import data from Excel**.
-14. Select the Excel file updated in step 7.
-15. Ensure the `Product` and `Owner` fields are mapped correctly.
-16. Navigate back to Copilot Studio.
-17. Select the **Message Center Triage Agent**.
+### Recommendations
 
-## Configure Agent Tools
+- Select the **To-do** bucket during setup.
+- If configuring synchronization for the first time, use **7 days** instead of **28 days** to reduce initial synchronization time.
 
-In Copilot Studio, navigate to **Tools** and update the `MessageCenterPlanner` tool with the Microsoft 365 Group and Planner plan name from the initial setup.
+Images/mc%20zip%20file.png
 
-Update the following tools:
+---
 
-### GetPlannerBuckets
+# Import the Solution
 
-Update the `GetPlannerBuckets` tool with:
+1. Navigate to **copilotstudio.microsoft.com**
+2. Select the target Power Platform environment.
+3. From the left navigation menu, select **Solutions**.
+4. Import the supplied **MessageCenterTriage.zip** solution.
 
-- Group name
-- Plan name
+Images/solution-import.png
 
-### Get Plan Details
+Images/mc%20zip%20file.png
 
-Update the `Get Plan Details` tool with the Planner plan ID.
+---
 
-The plan ID can be found by opening the plan in Planner. The plan ID is included in the Planner URL.
+# Configure Workload Assignments
 
-### ListWorkloadAssignments
+Open the included **WorkloadAssignments.xlsx** file.
 
-Validate that the `ListWorkloadAssignments` tool is configured correctly.
+Update the Product Owner assignments and save the file.
 
-It should show:
+---
 
-- Environment: `Current`
-- Table name: `MCTeamAssignments`
+# Import Workload Assignments into Dataverse
 
-After validating the tools, save and publish the changes.
+Navigate to:
 
-## Optional: Roadmap MCP
+```
+make.powerapps.com
+```
 
-The agent includes one optional MCP server connection. This connection can be deleted if you do not want to use it.
+Open:
 
-Reference: https://learn.microsoft.com/en-us/microsoft-365/admin/manage/mrc-mcp?view=o365-worldwide
+```
+Tables → MCTeamAssignments
+```
 
-## Test the Agent
+Images/dataverse-import-1.png
 
-At this point, the agent should be configured and ready to use.
+Select:
 
-If Planner sync is configured and Message Center posts are available in Planner, you can prompt the agent to triage a post.
+```
+Import → Import Data from Excel
+```
 
-Example prompts:
+Images/dataverseimportexcel.png
+
+Upload the updated workload assignment spreadsheet.
+
+Images/dataverse-import-excel2.png
+
+Verify that the following mappings are present:
+
+| Spreadsheet Column | Dataverse Column |
+|-------------------|------------------|
+| Owner | crxd_owner |
+| Product | crxd_product |
+
+Complete the import.
+
+---
+
+# Configure the Agent
+
+Open **Copilot Studio** and select the **Message Center Triage Agent**.
+
+Navigate to:
+
+```
+Tools
+```
+
+---
+
+## MessageCenterPlanner Tool
+
+Update the tool with:
+
+- Microsoft 365 Group Name
+- Planner Plan Name
+
+---
+
+## GetPlannerBuckets Tool
+
+Update:
+
+- Group Name
+- Plan Name
+
+---
+
+## Get Plan Details Tool
+
+Populate the Planner Plan ID.
+
+The Plan ID can be obtained by opening the Planner board and copying the ID from the URL.
+
+Images/Planner%20Details.png
+
+---
+
+## ListWorkloadAssignments Tool
+
+Verify the configuration:
+
+| Property | Value |
+|-----------|--------|
+| Environment | Current |
+| Table | MCTeamAssignments |
+
+Images/ListWorkloadAssignments.png
+
+---
+
+# Save and Publish
+
+After all configuration steps are completed:
+
+1. Save the agent
+2. Publish the agent
+
+---
+
+# Optional: Microsoft Release Communications MCP
+
+The solution includes an optional Microsoft Release Communications MCP connection.
+
+This component is not required for the core triage functionality and may be removed if desired.
+
+**Reference**
+
+https://learn.microsoft.com/en-us/microsoft-365/admin/manage/mrc-mcp?view=o365-worldwide
+
+---
+
+# Testing the Agent
+
+Once configuration is complete, test the agent with prompts such as:
 
 ```text
 Help me triage MC1309733
+```
+
+```text
+Provide a table of all Workload Assignments
+```
+
+```text
+Tell me about roadmap ID 499660
+```
+
+The agent should:
+
+- Retrieve the Message Center post
+- Determine impact
+- Identify workload owner
+- Create or update Planner tasks
+- Place work into the appropriate bucket
+
+---
+
+# Troubleshooting
+
+### Workload Assignment Not Found
+
+Verify:
+
+- MCTeamAssignments records have been imported
+- Product names match workload names appearing in Message Center posts
+- Owner field contains valid values
+
+### Planner Tasks Not Created
+
+Verify:
+
+- Planner Sync is enabled
+- Planner Plan Name is correct
+- Planner Group Name is correct
+- Planner Plan ID is correct
+
+### Planner Buckets Not Found
+
+Verify that all required buckets exist:
+
+- Informational
+- Low
+- Medium
+- High
+- Critical
+
+---
+
+# Resources
+
+- https://learn.microsoft.com/en-us/planner/track-message-center-tasks-planner
+- https://learn.microsoft.com/en-us/microsoft-365/admin/manage/mrc-mcp?view=o365-worldwide
+
+---
+
+# Repository Structure
+
+```text
+MessageCenterTriage
+│
+├── README.md
+├── MessageCenterTriage.zip
+├── WorkloadAssignments.xlsx
+│
+└── Images
+    ├── ListWorkloadAssignments.png
+    ├── Planner-buckets.png
+    ├── Planner Details.png
+    ├── solution-import.png
+    ├── mc zip file.png
+    ├── dataverse-import-1.png
+    ├── dataverseimportexcel.png
+    └── dataverse-import-excel2.png
+```
