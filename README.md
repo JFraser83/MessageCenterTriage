@@ -27,7 +27,7 @@ Create a Planner plan with the following buckets:
 
 > **Important:** Record the Planner Group Name and Plan Name. These values are required later when configuring the agent.
 
-![Planner Buckets](Images/Planner-buckets.png)essage Center Sync to Planner
+![Planner Buckets](Images/Planner-buckets.png)
 
 Enable Message Center synchronization to Planner using the Microsoft 365 admin configuration.
 
@@ -40,7 +40,6 @@ https://learn.microsoft.com/en-us/planner/track-message-center-tasks-planner#tur
 - Select the **To-do** bucket during setup.
 - If configuring synchronization for the first time, use **7 days** instead of **28 days** to reduce initial synchronization time.
 
-Images/mc%20zip%20file.png
 
 ---
 
@@ -51,7 +50,7 @@ Images/mc%20zip%20file.png
 3. From the left navigation menu, select **Solutions**.
 4. Import the supplied **MessageCenterTriage.zip** solution.
 
-Images/solution-import.png
+![Solution Import](Images/solution-import.png)
 
 Images/mc%20zip%20file.png
 
