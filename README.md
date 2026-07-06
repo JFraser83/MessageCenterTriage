@@ -52,7 +52,7 @@ https://learn.microsoft.com/en-us/planner/track-message-center-tasks-planner#tur
 
 ![Solution Import](Images/solution-import.png)
 
-Images/mc%20zip%20file.png
+![Solution Import](Images/mc-zip-file.png)
 
 ---
 
@@ -78,7 +78,7 @@ Open:
 Tables → MCTeamAssignments
 ```
 
-Images/dataverse-import-1.png
+![DataVerse Import](Images/dataverse-import-1.png)
 
 Select:
 
@@ -86,11 +86,11 @@ Select:
 Import → Import Data from Excel
 ```
 
-Images/dataverseimportexcel.png
+![Dataverse Import](Images/dataverseimportexcel.png)
 
 Upload the updated workload assignment spreadsheet.
 
-Images/dataverse-import-excel2.png
+![Dataverse import](Images/dataverse-import-excel2.png)
 
 Verify that the following mappings are present:
 
@@ -139,7 +139,7 @@ Populate the Planner Plan ID.
 
 The Plan ID can be obtained by opening the Planner board and copying the ID from the URL.
 
-Images/Planner%20Details.png
+![Planner Details](Images/Planner%20Details.png)
 
 ---
 
@@ -152,7 +152,7 @@ Verify the configuration:
 | Environment | Current |
 | Table | MCTeamAssignments |
 
-Images/ListWorkloadAssignments.png
+![Workload Assignment](Images/ListWorkloadAssignments.png)
 
 ---
 
