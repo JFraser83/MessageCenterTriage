@@ -11,6 +11,7 @@ Before deploying the solution, ensure the following requirements are met:
 - Power Platform Environment with Dataverse
 - Copilot Studio Credits or Pay-As-You-Go configured
   - This is an autonomous agent and consumes generative AI capacity
+  - Based on the current configuration running daily Monday-Friday this Agent template uses approximately 3000-3500 credits per month. 
 - Microsoft 365 Message Center synchronized to Planner
 
 ---
